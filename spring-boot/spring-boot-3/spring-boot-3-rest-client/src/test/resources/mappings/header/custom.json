@@ -1,0 +1,15 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/header/custom",
+    "headers": {
+      "X-CUSTOM-SAMPLE": {
+        "equalTo": "X-CUSTOM-SAMPLE-VALUE"
+      }
+    }
+  },
+
+  "response": {
+    "status": 200
+  }
+}

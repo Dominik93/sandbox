@@ -1,0 +1,10 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/log"
+  },
+
+  "response": {
+    "status": 200
+  }
+}

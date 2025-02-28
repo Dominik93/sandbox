@@ -1,0 +1,14 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/multi-response/422"
+  },
+
+  "response": {
+    "status": 422,
+    "jsonBody": { "error": "422" },
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

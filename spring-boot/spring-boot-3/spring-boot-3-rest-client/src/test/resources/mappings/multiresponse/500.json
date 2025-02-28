@@ -1,0 +1,14 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/multi-response/500"
+  },
+
+  "response": {
+    "status": 500,
+    "jsonBody": { "error": "500" },
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

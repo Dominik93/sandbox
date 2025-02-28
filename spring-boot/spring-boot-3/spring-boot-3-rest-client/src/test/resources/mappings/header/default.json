@@ -1,0 +1,15 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/header/default",
+    "headers": {
+      "X-DEFAULT-SAMPLE": {
+        "equalTo": "X-DEFAULT-SAMPLE-VALUE"
+      }
+    }
+  },
+
+  "response": {
+    "status": 200
+  }
+}
