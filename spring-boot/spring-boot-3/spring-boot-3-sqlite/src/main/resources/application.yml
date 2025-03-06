@@ -1,0 +1,16 @@
+logging:
+  level:
+    root: INFO
+
+spring:
+  datasource:
+    url: jdbc:sqlite:./spring-boot-3/spring-boot-3-sqlite/src/main/resources/sample
+    password: sample
+    username: sample
+  jpa:
+    show_sql: true
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.community.dialect.SQLiteDialect
