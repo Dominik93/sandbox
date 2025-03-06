@@ -5,6 +5,7 @@ import com.slusarz.sandbox.springboot.restclient.examples.header.Headers;
 import com.slusarz.sandbox.springboot.restclient.examples.log.Log;
 import com.slusarz.sandbox.springboot.restclient.examples.method.Method;
 import com.slusarz.sandbox.springboot.restclient.examples.multiresponse.MultiResponse;
+import com.slusarz.sandbox.springboot.restclient.examples.timeout.Timeout;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -39,6 +40,11 @@ public class Application {
     @Bean
     MultiResponse multiResponse() {
         return new MultiResponse();
+    }
+
+    @Bean
+    Timeout timeout() {
+        return new Timeout();
     }
 
 }
