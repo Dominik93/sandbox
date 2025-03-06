@@ -23,6 +23,7 @@
         <module>spring-boot-3-rest-client</module>
         <module>spring-boot-3-testcontainers</module>
         <module>spring-boot-3-sqlite</module>
+        <module>spring-boot-3-flyway</module>
     </modules>
 
     <dependencyManagement>
