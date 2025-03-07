@@ -48,6 +48,7 @@
             <groupId>org.wiremock.integrations</groupId>
             <artifactId>wiremock-spring-boot</artifactId>
             <version>${wiremock-spring-boot.version}</version>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>
