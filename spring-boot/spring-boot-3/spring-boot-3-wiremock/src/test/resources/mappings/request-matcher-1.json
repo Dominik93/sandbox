@@ -1,0 +1,19 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/request-matcher",
+    "bodyPatterns" : [ {
+      "matchesJsonPath" : "$.[?(@.value == 'OK')]"
+    } ]
+  },
+
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "message": "OK"
+    },
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}
