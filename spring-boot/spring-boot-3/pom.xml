@@ -24,6 +24,7 @@
         <module>spring-boot-3-testcontainers</module>
         <module>spring-boot-3-sqlite</module>
         <module>spring-boot-3-flyway</module>
+        <module>spring-boot-3-wiremock</module>
     </modules>
 
     <dependencyManagement>
