@@ -17,6 +17,8 @@
     <properties>
         <postgresql.version>42.7.3</postgresql.version>
         <postgresql-testcontainers.version>1.19.8</postgresql-testcontainers.version>
+        <mysql-connector-java.version>9.2.0</mysql-connector-java.version>
+        <mysql-testcontainers.version>1.20.0</mysql-testcontainers.version>
     </properties>
 
 
@@ -49,6 +51,11 @@
             <artifactId>postgresql</artifactId>
             <version>${postgresql.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <version>${mysql-connector-java.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -59,6 +66,12 @@
             <groupId>org.testcontainers</groupId>
             <artifactId>postgresql</artifactId>
             <version>${postgresql-testcontainers.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>mysql</artifactId>
+            <version>${mysql-testcontainers.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
