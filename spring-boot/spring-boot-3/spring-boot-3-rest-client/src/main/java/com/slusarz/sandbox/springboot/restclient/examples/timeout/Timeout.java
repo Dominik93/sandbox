@@ -24,13 +24,8 @@ public class Timeout {
         this.service = factory.createClient(TimeoutService.class);
     }
 
-    public void timeout() {
-        service.timeout5s();
+    public void timeout(String time) {
+        service.timeout(time);
     }
-
-    public void noTimeout() {
-        service.timeout1s();
-    }
-
 
 }

@@ -20,12 +20,12 @@ class TimeoutTest {
 
     @Test
     void shouldThrowTimeoutException() {
-        assertThatThrownBy(() -> timeout.timeout()).isInstanceOf(ResourceAccessException.class);
+        assertThatThrownBy(() -> timeout.timeout("1")).isInstanceOf(ResourceAccessException.class);
     }
 
     @Test
     void shouldNotThrowTimeoutException() {
-        assertThatNoException().isThrownBy(() -> timeout.noTimeout());
+        assertThatNoException().isThrownBy(() -> timeout.timeout("5"));
     }
 
 }

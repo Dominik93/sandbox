@@ -1,0 +1,11 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/timeout/200000"
+  },
+
+  "response": {
+    "status": 200,
+    "fixedDelayMilliseconds": 200000
+  }
+}
