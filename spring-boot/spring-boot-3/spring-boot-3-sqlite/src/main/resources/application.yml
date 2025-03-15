@@ -4,7 +4,7 @@ logging:
 
 spring:
   datasource:
-    url: jdbc:sqlite:./spring-boot-3/spring-boot-3-sqlite/src/main/resources/sample
+    url: jdbc:sqlite:./spring-boot-3/spring-boot-3-sqlite/src/main/resources/sample.db
     password: sample
     username: sample
   jpa:
