@@ -26,6 +26,7 @@
         <module>spring-boot-3-flyway</module>
         <module>spring-boot-3-wiremock</module>
         <module>spring-boot-3-shedlock</module>
+        <module>spring-boot-3-timezone</module>
     </modules>
 
     <dependencyManagement>

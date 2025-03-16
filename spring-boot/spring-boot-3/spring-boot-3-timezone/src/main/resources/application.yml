@@ -1,0 +1,22 @@
+logging:
+  level:
+    root: INFO
+    org.hibernate.orm.jdbc.bind: trace
+
+configuration:
+  application-time-zone: "GMT+08:00"
+
+spring:
+  datasource:
+    url: jdbc:sqlite:./spring-boot-3/spring-boot-3-timezone/src/main/resources/sample.db
+    password: sample
+    username: sample
+  jpa:
+    show_sql: true
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+        dialect: org.hibernate.community.dialect.SQLiteDialect
