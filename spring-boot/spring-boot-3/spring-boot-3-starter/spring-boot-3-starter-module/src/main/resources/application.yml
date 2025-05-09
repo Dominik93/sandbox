@@ -1,0 +1,5 @@
+company:
+  modules:
+    enabled: true
+    sample:
+      enabled: true
