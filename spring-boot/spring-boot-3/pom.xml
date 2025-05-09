@@ -27,6 +27,7 @@
         <module>spring-boot-3-wiremock</module>
         <module>spring-boot-3-shedlock</module>
         <module>spring-boot-3-timezone</module>
+        <module>spring-boot-3-starter</module>
     </modules>
 
     <dependencyManagement>
