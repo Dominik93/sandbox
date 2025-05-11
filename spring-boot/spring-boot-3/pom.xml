@@ -20,6 +20,7 @@
     </properties>
 
     <modules>
+        <module>spring-boot-3-sample</module>
         <module>spring-boot-3-multiple-applications</module>
         <module>spring-boot-3-rest-client</module>
         <module>spring-boot-3-testcontainers</module>
