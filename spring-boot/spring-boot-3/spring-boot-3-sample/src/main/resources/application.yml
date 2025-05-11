@@ -1,3 +1,6 @@
+# if async-task = true and web-application-type = NONE application won`t close
 spring:
+  async-task:
+    enabled: false
   main:
     web-application-type: NONE
