@@ -58,19 +58,56 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
-                <configuration>
-                    <mainClass>
-                        org.springframework.boot.loader.launch.PropertiesLauncher
-                    </mainClass>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
-                </configuration>
                 <executions>
                     <execution>
+                        <id>one-jar</id>
+                        <configuration>
+                            <mainClass>
+                                org.springframework.boot.loader.launch.PropertiesLauncher
+                            </mainClass>
+                            <excludes>
+                                <exclude>
+                                    <groupId>org.projectlombok</groupId>
+                                    <artifactId>lombok</artifactId>
+                                </exclude>
+                            </excludes>
+                        </configuration>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>main-jar</id>
+                        <configuration>
+                            <finalName>main-application</finalName>
+                            <mainClass>
+                                com.slusarz.sandbox.springboot.multipleapplications.MainApplication
+                            </mainClass>
+                            <excludes>
+                                <exclude>
+                                    <groupId>org.projectlombok</groupId>
+                                    <artifactId>lombok</artifactId>
+                                </exclude>
+                            </excludes>
+                        </configuration>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>support-jar</id>
+                        <configuration>
+                            <finalName>support-application</finalName>
+                            <mainClass>
+                                com.slusarz.sandbox.springboot.multipleapplications.SupportApplication
+                            </mainClass>
+                            <excludes>
+                                <exclude>
+                                    <groupId>org.projectlombok</groupId>
+                                    <artifactId>lombok</artifactId>
+                                </exclude>
+                            </excludes>
+                        </configuration>
                         <goals>
                             <goal>repackage</goal>
                         </goals>

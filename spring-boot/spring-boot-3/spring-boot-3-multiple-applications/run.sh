@@ -1,0 +1,1 @@
+java -jar target/$1-application.jar
