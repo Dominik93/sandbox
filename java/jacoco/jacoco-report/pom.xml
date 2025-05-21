@@ -39,7 +39,6 @@
                 <executions>
                     <execution>
                         <id>copy-resources</id>
-                        <!-- here the phase you need -->
                         <phase>validate</phase>
                         <goals>
                             <goal>copy-resources</goal>
@@ -48,10 +47,10 @@
                             <outputDirectory>${project.build.directory}/classes</outputDirectory>
                             <resources>
                                 <resource>
-                                    <directory>${project.parent.basedir}/jacoco-module/target/classes</directory>
-                                </resource>
-                                <resource>
-                                    <directory>${project.parent.basedir}/jacoco-component/target/classes</directory>
+                                    <directory>${maven.multiModuleProjectDirectory}</directory>
+                                    <includes>
+                                        <include>**/target/classes/**/*.class</include>
+                                    </includes>
                                 </resource>
                             </resources>
                         </configuration>
