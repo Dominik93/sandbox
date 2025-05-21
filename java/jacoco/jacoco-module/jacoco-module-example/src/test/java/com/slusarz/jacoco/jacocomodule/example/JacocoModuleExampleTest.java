@@ -1,13 +1,15 @@
-package com.slusarz.jacoco.jacocomodule;
+package com.slusarz.jacoco.jacocomodule.example;
 
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-class JacocoModuleTest {
+
+
+class JacocoModuleExampleTest {
 
     @Test
     void shouldReturnValueMultipliedByFive() {
-        JacocoModule jacocoComponent = new JacocoModule();
+        JacocoModuleExample jacocoComponent = new JacocoModuleExample();
 
         String component = jacocoComponent.component("1");
 

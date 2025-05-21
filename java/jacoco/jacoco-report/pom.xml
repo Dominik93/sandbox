@@ -27,7 +27,12 @@
         </dependency>
         <dependency>
             <groupId>com.slusarz.sandbox</groupId>
-            <artifactId>jacoco-module</artifactId>
+            <artifactId>jacoco-module-sample</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.slusarz.sandbox</groupId>
+            <artifactId>jacoco-module-example</artifactId>
             <version>1.0.0</version>
         </dependency>
     </dependencies>

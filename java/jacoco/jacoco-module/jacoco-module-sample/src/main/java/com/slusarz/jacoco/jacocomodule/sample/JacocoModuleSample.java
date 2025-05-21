@@ -1,8 +1,8 @@
-package com.slusarz.jacoco.jacocomodule;
+package com.slusarz.jacoco.jacocomodule.sample;
 
 import java.util.Objects;
 
-public class JacocoModule {
+public class JacocoModuleSample {
 
     public String component(String value) {
         if (Objects.isNull(value)) {
