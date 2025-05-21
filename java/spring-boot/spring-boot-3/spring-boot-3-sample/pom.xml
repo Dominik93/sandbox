@@ -11,7 +11,7 @@
         <version>1.0.0</version>
     </parent>
 
-    <artifactId>spring-boot-3-starter-sample</artifactId>
+    <artifactId>spring-boot-3-sample</artifactId>
     <version>1.0.0</version>
 
     <dependencies>
