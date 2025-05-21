@@ -6,6 +6,7 @@ import org.springframework.web.client.RestClient;
 import org.springframework.web.client.support.RestClientAdapter;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @AllArgsConstructor
@@ -36,6 +37,7 @@ public class Method {
     public void put(String id) {
         Request request = new Request();
         request.setSample(id);
+        request.setDateTime(LocalDateTime.now());
         service.putSamplesById(id, request);
     }
 
