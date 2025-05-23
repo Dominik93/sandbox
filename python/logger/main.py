@@ -16,6 +16,11 @@ def process_parameters(one, two):
     time.sleep(1)
     pass
 
+@log(level)
+def process_parameter(one):
+    time.sleep(1)
+    pass
+
 
 @log(level)
 def get_value():
@@ -32,5 +37,6 @@ def sample_message():
 if __name__ == '__main__':
     sample()
     process_parameters("one", 5)
-    get_value()
+    process_parameter("one")
+    value = get_value()
     sample_message()

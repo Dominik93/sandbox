@@ -23,6 +23,7 @@ def log(level=Level.INFO,
             log_result = _get_log(level, [Level.INFO], lambda: f" returned: {str(result)}")
             duration = int((time.time_ns() - start) / 1000000)
             _print(level, end_message.format(name=func.__name__, args=log_args, result=log_result, duration=duration))
+            return result
 
         return log_wrapper
 
