@@ -1,14 +1,19 @@
 import json
 import os.path
 import pickle
+from enum import Enum
 
 
-def create_store(name: str):
-    if name == 'pickle':
+class Storage(Enum):
+    PICKLE = 1
+    JSON = 2
+
+
+def create_store(storage: Storage):
+    if storage == Storage.PICKLE:
         return PickleStore()
-    if name == 'json':
+    if storage == Storage.JSON:
         return JsonStore()
-    raise Exception(f"Store {name} not found.")
 
 
 class Store:
