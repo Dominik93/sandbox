@@ -9,7 +9,7 @@ class Level(Enum):
     OFF = 4
 
 
-def log(level,
+def log(level=Level.INFO,
         start_message="Execution started {name}{args}",
         end_message="Execution completed {name}{args}{result} in {duration}ms"):
     def log_decorator(func):
