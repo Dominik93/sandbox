@@ -23,7 +23,14 @@ def get_value():
     return "sample"
 
 
+@log(level, start_message="Start get sample", end_message="Completed in {duration}ms")
+def sample_message():
+    time.sleep(1)
+    pass
+
+
 if __name__ == '__main__':
     sample()
     process_parameters("one", 5)
     get_value()
+    sample_message()

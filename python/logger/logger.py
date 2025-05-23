@@ -9,19 +9,20 @@ class Level(Enum):
     OFF = 4
 
 
-def log(level):
+def log(level,
+        start_message="Execution started {name}{args}",
+        end_message="Execution completed {name}{args}{result} in {duration}ms"):
     def log_decorator(func):
         def log_wrapper(*args, **kwargs):
             start = time.time_ns()
 
             log_args = _get_log(level, [Level.INFO], lambda: args)
-            _print(level, f'Execution started {func.__name__}{log_args}')
-
+            _print(level, start_message.format(name=func.__name__, args=log_args))
             result = func(*args, **kwargs)
 
             log_result = _get_log(level, [Level.INFO], lambda: f" returned: {str(result)}")
             duration = int((time.time_ns() - start) / 1000000)
-            _print(level, f'Execution completed {func.__name__}{log_args}{log_result} in {duration}ms')
+            _print(level, end_message.format(name=func.__name__, args=log_args, result=log_result, duration=duration))
 
         return log_wrapper
 
