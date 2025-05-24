@@ -34,9 +34,11 @@ def _prepare_header(content):
 
 def _prepare_row(headers_row, item):
     row = []
-    for key in item:
-        if key in headers_row:
-            row.append(str(item[key]))
+    for header in headers_row:
+        value = ""
+        if header in item:
+            value = str(item[header])
+        row.append(value)
     return row
 
 
