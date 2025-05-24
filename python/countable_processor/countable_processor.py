@@ -27,6 +27,7 @@ class CountableProcessor:
                 all_duration = self._get_duration(all_start)
                 print(f'Exception {e} during iteration {idx + 1}/{total} {item_duration}/{all_duration}ms')
                 if self.exception_strategy == ExceptionStrategy.INTERRUPT:
+                    print(f'Processing interrupted, returning already processed items')
                     return self.results
             item_duration = self._get_duration(item_start)
             all_duration = self._get_duration(all_start)
