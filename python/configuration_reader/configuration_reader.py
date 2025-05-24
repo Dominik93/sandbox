@@ -6,5 +6,5 @@ def read_configuration(name):
 
 
 def read(file):
-    with open(file + ".json", 'r') as file:
+    with open(file + ".json", 'r', encoding="utf-8") as file:
         return json.load(file)
