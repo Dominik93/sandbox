@@ -9,7 +9,7 @@ def _prepare_row(headers_row, item):
     row = []
     for key in item:
         if key in headers_row:
-            row.append(item[key] if item[key] is not None else "")
+            row.append(str(item[key]))
     return row
 
 

@@ -1,7 +1,7 @@
 from csv_writer import write
 
 if __name__ == "__main__":
-    content = [{"col_1": "val.1.1", "col_2": "val.1.2"},
+    content = [{"col_1": True, "col_2": "val.1.2"},
                {"col_1": "val.2.1", "col_2": None}]
 
     write("test.csv", content)
