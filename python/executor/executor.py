@@ -33,15 +33,21 @@ class AsyncExecutor(Executor):
 
     def __init__(self):
         self.results = []
+        self.total_tasks = 0
+        self.completed_tasks = 0
         self.pool = Pool()
 
     def add(self, method, arguments):
+        self.total_tasks += 1
         self.results.append(self.pool.apply_async(method, arguments))
 
     def execute(self):
         results = []
         for result in self.results:
-            results.append(result.get())
+            result = result.get()
+            self.completed_tasks += 1
+            print(f'Executed {self.completed_tasks}/{self.total_tasks}')
+            results.append(result)
         self.pool.close()
         self.pool.join()
         return results
