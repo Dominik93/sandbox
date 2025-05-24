@@ -25,12 +25,16 @@ class Store:
 
     def load(self, supplier, storage):
         if os.path.isfile(storage + "." + self.extension):
-            return self.loader(storage + "." + self.extension)
+            obj = self.loader(storage + "." + self.extension)
+            print(f'Loaded from store {len(obj)} items')
+            return obj
         obj = supplier()
+        print(f'Load from supplier {len(obj)} items')
         self.saver(obj, storage + "." + self.extension)
         return obj
 
     def store(self, obj, storage):
+        print(f'Store {len(obj)} items')
         self.saver(obj, storage + "." + self.extension)
 
 
