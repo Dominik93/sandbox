@@ -19,11 +19,13 @@ emoji_pattern = re.compile("["
                            u"\u231a"
                            u"\ufe0f"  # dingbats
                            u"\u3030"
+                           u"\xb2"
                            "]+", flags=re.UNICODE)
 
 
 def _sanitize(row):
-    return emoji_pattern.sub(r'', row).replace("\xb2", "")
+    return emoji_pattern.sub(r'', row)
+
 
 def _prepare_header(content):
     header = []
@@ -47,5 +49,5 @@ def write(file: str, content: list[dict], separator: str = ";", headers: list[st
     with open(file.replace("{timestamp}", datetime.datetime.now().strftime("%H-%M-%S")), "w", encoding="utf-8") as f:
         f.write(separator.join(headers_row) + "\n")
         for item in content:
-            row = _sanitize(_prepare_row(headers_row, item))
-            f.write(separator.join(row) + "\n")
+            row = _prepare_row(headers_row, item)
+            f.write(_sanitize(separator.join(row)) + "\n")
