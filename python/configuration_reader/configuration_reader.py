@@ -20,7 +20,10 @@ class Config:
     def __init__(self, config: dict):
         self.config = config
 
-    def get(self, path: str, default: any = '') -> dict | list | str | int:
+    def get(self, path: str, default: any = ''):
+        return Config(self._get_or_default(path.split("."), default))
+
+    def get_value(self, path: str, default: any = '') -> dict | list | str | int:
         return self._get_or_default(path.split("."), default)
 
     def _get_or_default(self, property_names: list, default: any = '') -> dict | list | str | int:
