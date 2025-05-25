@@ -1,14 +1,14 @@
 import json
 
 
-def read_configuration(name):
+def read_configuration(name: str, factory_provider=lambda x: Config(x)):
     with open(name + ".json", 'r', encoding="utf-8") as file:
-        return Config(json.load(file))
+        return factory_provider(json.load(file))
 
 
 class Config:
 
-    def __init__(self, config):
+    def __init__(self, config: dict):
         self.config = config
 
     def get(self, path: str, default: any = '') -> dict | list | str | int:
