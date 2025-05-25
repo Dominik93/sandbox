@@ -27,10 +27,11 @@ def _sanitize(row):
     return emoji_pattern.sub(r'', row)
 
 
-def _prepare_header(content):
+def _prepare_header(content: list):
     header = []
-    for key in content[0]:
-        header.append(key)
+    if len(content) > 0:
+        for key in content[0]:
+            header.append(key)
     return header
 
 
