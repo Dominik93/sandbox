@@ -11,9 +11,9 @@ class Storage(Enum):
 
 def create_store(storage: Storage):
     if storage == Storage.PICKLE:
-        return PickleStore()
+        return Store(lambda s: _pkl_load(s), lambda obj, s: _pkl_store(obj, s), "pkl")
     if storage == Storage.JSON:
-        return JsonStore()
+        return Store(lambda s: _json_load(s), lambda obj, s: _json_store(obj, s), "json")
 
 
 class Store:
@@ -23,7 +23,7 @@ class Store:
         self.saver = saver
         self.extension = extension
 
-    def load(self, supplier, storage):
+    def load(self, supplier, storage: str):
         if os.path.isfile(storage + "." + self.extension):
             obj = self.loader(storage + "." + self.extension)
             print(f'Loaded from store {len(obj)} items')
@@ -33,38 +33,26 @@ class Store:
         self.saver(obj, storage + "." + self.extension)
         return obj
 
-    def store(self, obj, storage):
+    def store(self, obj, storage: str):
         print(f'Store {len(obj)} items')
         self.saver(obj, storage + "." + self.extension)
 
 
-class JsonStore(Store):
-
-    def __init__(self):
-        super().__init__(lambda storage: self._load(storage),
-                         lambda obj, storage: self._store(obj, storage),
-                         "json")
-
-    def _store(self, obj, storage):
-        with open(storage, 'w', encoding='utf-8') as f:
-            json.dump(obj, f, ensure_ascii=False, indent=4)
-
-    def _load(self, storage):
-        with open(storage, encoding='utf-8') as f:
-            return json.load(f)
+def _json_store(obj, storage: str):
+    with open(storage, 'w', encoding='utf-8') as f:
+        json.dump(obj, f, ensure_ascii=False, indent=4)
 
 
-class PickleStore(Store):
+def _json_load(storage: str):
+    with open(storage, encoding='utf-8') as f:
+        return json.load(f)
 
-    def __init__(self):
-        super().__init__(lambda storage: self._load(storage),
-                         lambda obj, storage: self._store(obj, storage),
-                         "pkl")
 
-    def _store(self, obj, storage):
-        with open(storage, 'wb') as outp:
-            pickle.dump(obj, outp, pickle.HIGHEST_PROTOCOL)
+def _pkl_store(obj, storage: str):
+    with open(storage, 'wb') as f:
+        pickle.dump(obj, f, pickle.HIGHEST_PROTOCOL)
 
-    def _load(self, storage):
-        with open(storage, 'rb') as inp:
-            return pickle.load(inp)
+
+def _pkl_load(storage: str):
+    with open(storage, 'rb') as f:
+        return pickle.load(f)
