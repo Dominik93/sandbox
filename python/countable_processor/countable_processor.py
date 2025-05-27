@@ -11,10 +11,12 @@ class ExceptionStrategy(Enum):
 
 class CountableProcessor:
 
-    def __init__(self, item_processor: callable, strategy=ExceptionStrategy.INTERRUPT):
+    def __init__(self, item_processor: callable, input_provider=lambda x: input("You want to continue? Y/N"),
+                 strategy=ExceptionStrategy.INTERRUPT):
         self.exception_strategy = strategy
         self.results = []
         self.item_processor = item_processor
+        self.input_provider = input_provider
 
     def run(self, items: list):
         all_start = time.time_ns()
@@ -28,7 +30,7 @@ class CountableProcessor:
                 all_duration = self._get_duration(all_start)
                 print(f'Exception {e} during iteration {idx + 1}/{total} {item_duration}/{all_duration}ms')
                 if self.exception_strategy == ExceptionStrategy.ASK:
-                    retry = input("You want to continue? Y/N")
+                    retry = self.input_provider()
                     if retry == 'N':
                         return self.results
                 if self.exception_strategy == ExceptionStrategy.INTERRUPT:
