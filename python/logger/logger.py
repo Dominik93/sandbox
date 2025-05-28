@@ -16,8 +16,7 @@ class Logger:
         self.name = name
 
     def now(self):
-        now = datetime.now()
-        return now.strftime('%Y-%m-%dT%H:%M:%S.%f')
+        return datetime.now().strftime('%Y-%m-%dT%H:%M:%S.%f')
 
     def log(self, log_format: str, content_provider):
         pass
