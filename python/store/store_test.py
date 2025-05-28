@@ -1,40 +1,43 @@
 import os.path
 import unittest
 
+from parameterized import parameterized
+
 from store import create_store, Storage
+
+
+def _clean(file):
+    os.remove(file)
 
 
 class StoreTestCase(unittest.TestCase):
 
-    def test_should_store_json(self):
-        store = create_store(Storage.JSON)
+    @parameterized.expand([
+        [Storage.JSON, ".json"],
+        [Storage.PICKLE, ".pkl"],
+    ])
+    def test_should_store(self, storage, extension):
+        store = create_store(storage)
         store.store({"value": "sample"}, "file")
-        self.assertTrue(os.path.isfile("file.json"))
-        os.remove("file.json")
+        self.assertTrue(os.path.isfile("file" + extension))
+        _clean("file" + extension)
 
-    def test_should_load_stored_json(self):
-        store = create_store(Storage.JSON)
+    @parameterized.expand([
+        [Storage.JSON],
+        [Storage.PICKLE],
+    ])
+    def test_should_load_stored(self, storage):
+        store = create_store(storage)
         self.assertEqual({"value": "sample"}, store.load(lambda: {}, "load"))
 
-    def test_should_load_from_provider_json(self):
-        store = create_store(Storage.JSON)
+    @parameterized.expand([
+        [Storage.JSON, ".json"],
+        [Storage.PICKLE, ".pkl"],
+    ])
+    def test_should_load_from_provider(self, storage, extension):
+        store = create_store(storage)
         self.assertEqual({"value": "sample"}, store.load(lambda: {"value": "sample"}, "empty"))
-        os.remove("empty.json")
-
-    def test_should_store_pickle(self):
-        store = create_store(Storage.PICKLE)
-        store.store({"value": "sample"}, "file")
-        self.assertTrue(os.path.isfile("file.pkl"))
-        os.remove("file.pkl")
-
-    def test_should_load_stored_pickle(self):
-        store = create_store(Storage.PICKLE)
-        self.assertEqual({"value": "sample"}, store.load(lambda: {}, "load"))
-
-    def test_should_load_from_provider_pickle(self):
-        store = create_store(Storage.PICKLE)
-        self.assertEqual({"value": "sample"}, store.load(lambda: {"value": "sample"}, "empty"))
-        os.remove("empty.pkl")
+        _clean("empty" + extension)
 
 
 if __name__ == '__main__':
