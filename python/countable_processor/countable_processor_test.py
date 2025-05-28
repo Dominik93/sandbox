@@ -14,7 +14,7 @@ PASS = ExceptionStrategy.PASS
 INTERRUPT = ExceptionStrategy.INTERRUPT
 
 
-class CountableProcessorReaderTestCase(unittest.TestCase):
+class CountableProcessorTestCase(unittest.TestCase):
 
     def test_should_process_items(self):
         results = []
