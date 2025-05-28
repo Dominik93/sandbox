@@ -5,7 +5,7 @@ from countable_processor import CountableProcessor, ExceptionStrategy
 
 def _interrupt(item: str):
     if item == "2":
-        raise Exception
+        raise Exception("Test exception")
     return item
 
 

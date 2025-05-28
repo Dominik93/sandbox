@@ -1,6 +1,7 @@
 import time
-
 from enum import Enum
+
+from logger.logger import CompositeLogger, Level
 
 
 class ExceptionStrategy(Enum):
@@ -11,12 +12,13 @@ class ExceptionStrategy(Enum):
 
 class CountableProcessor:
 
-    def __init__(self, item_processor: callable, input_provider=lambda x: input("You want to continue? Y/N"),
+    def __init__(self, item_processor: callable, input_provider=lambda: input("You want to continue? Y/N"),
                  strategy=ExceptionStrategy.INTERRUPT):
         self.exception_strategy = strategy
         self.results = []
         self.item_processor = item_processor
         self.input_provider = input_provider
+        self.logger = CompositeLogger(Level.INFO, self.__class__.__name__)
 
     def run(self, items: list):
         all_start = time.time_ns()
@@ -28,17 +30,17 @@ class CountableProcessor:
             except Exception as e:
                 item_duration = self._get_duration(item_start)
                 all_duration = self._get_duration(all_start)
-                print(f'Exception {e} during iteration {idx + 1}/{total} {item_duration}/{all_duration}ms')
+                self.logger.log("run",f'Exception {e} during iteration {idx + 1}/{total} {item_duration}/{all_duration}ms')
                 if self.exception_strategy == ExceptionStrategy.ASK:
                     retry = self.input_provider()
                     if retry == 'N':
                         return self.results
                 if self.exception_strategy == ExceptionStrategy.INTERRUPT:
-                    print(f'Processing interrupted, returning already processed items')
+                    self.logger.log("run", f'Processing interrupted, returning already processed items')
                     return self.results
             item_duration = self._get_duration(item_start)
             all_duration = self._get_duration(all_start)
-            print(f'Processed {idx + 1}/{total} in {item_duration}/{all_duration}ms')
+            self.logger.log("run", f'Processed {idx + 1}/{total} in {item_duration}/{all_duration}ms')
         return self.results
 
     def _get_duration(self, start):

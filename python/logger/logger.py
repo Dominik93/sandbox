@@ -11,15 +11,22 @@ class Level(Enum):
 
 class Logger:
 
-    def __init__(self, level: Level, name: str):
+    def __init__(self, level: Level, name: str, timestamp_format="%Y-%m-%dT%H:%M:%S.%f"):
         self.level = level
         self.name = name
+        self.timestamp_format = timestamp_format
 
     def now(self):
-        return datetime.now().strftime('%Y-%m-%dT%H:%M:%S.%f')
+        return datetime.now().strftime(self.timestamp_format)
 
-    def log(self, log_format: str, content_provider):
+    def get_name(self, method_name):
+        return f'{self.name}:{method_name}' if method_name is not None else self.name
+
+    def log(self, method_name, log_format: str, content_provider=lambda x: x):
         pass
+
+    def format(self, method_name, log_format: str, content_provider=lambda x: x):
+        return f'{self.level.name}:{self.now()}:{self.get_name(method_name)}:{content_provider(log_format)}'
 
 
 class ConsoleLogger(Logger):
@@ -27,8 +34,8 @@ class ConsoleLogger(Logger):
     def __init__(self, level: Level, name: str):
         super().__init__(level, name)
 
-    def log(self, log_format: str, content_provider):
-        print(f'{self.level.name}:{self.now()}:{self.name}:{content_provider(log_format)}')
+    def log(self, method_name, log_format: str, content_provider=lambda x: x):
+        print(self.format(method_name, log_format, content_provider))
 
 
 class FileLogger(Logger):
@@ -37,9 +44,9 @@ class FileLogger(Logger):
         super().__init__(level, name)
         self.file_name = file_name
 
-    def log(self, log_format: str, content_provider):
+    def log(self, method_name, log_format: str, content_provider=lambda x: x):
         log_file = open(self.file_name, "a")
-        log_file.write(f'{self.level.name}:{self.now()}:{self.name}:{content_provider(log_format)}\n')
+        log_file.write(self.format(method_name, log_format, content_provider) + '\n')
         log_file.close()
 
 
@@ -49,19 +56,14 @@ class CompositeLogger(Logger):
         super().__init__(level, name)
         self.printers = [ConsoleLogger(level, name), FileLogger(level, name, "app.log")]
 
-    def log(self, log_format: str, content_provider=lambda x: x):
+    def log(self, method_name=None, log_format: str = "", content_provider=lambda x: x):
         if log_format is None:
             return
         if self.level.value < Level.DEBUG.value:
             log_format = log_format.replace("{args}", "-").replace("{result}", "-")
         if self.level != Level.OFF:
             for printer in self.printers:
-                printer.log(log_format, content_provider)
-
-    def _get_log(self, exclude_levels: list[Level], log_provider):
-        if self.level in exclude_levels:
-            return ""
-        return log_provider()
+                printer.log(method_name, log_format, content_provider)
 
 
 def log(level=Level.INFO,
@@ -69,14 +71,16 @@ def log(level=Level.INFO,
         end_message="Execution completed args: {args} result: {result} in {duration}ms"):
     def log_decorator(func):
         def log_wrapper(*args, **kwargs):
-            printer = CompositeLogger(level, func.__name__)
-            printer.log(start_message, lambda x: x.format(args=args))
+            printer = CompositeLogger(level, "Log")
+            printer.log(method_name=func.__name__, log_format=start_message,
+                        content_provider=lambda x: x.format(args=args))
 
             start = time.time_ns()
             result = func(*args, **kwargs)
             duration = _get_duration(start)
 
-            printer.log(end_message, lambda x: x.format(args=args, result=f"{str(result)}", duration=duration))
+            printer.log(method_name=func.__name__, log_format=end_message,
+                        content_provider=lambda x: x.format(args=args, result=f"{str(result)}", duration=duration))
             return result
 
         return log_wrapper
