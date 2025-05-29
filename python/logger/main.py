@@ -1,8 +1,8 @@
 import time
 
-from logger import log, Level
+from logger import log, Level, set_root_level
 
-level = Level.INFO
+level = Level.DEBUG
 
 
 @log(level)
@@ -41,10 +41,20 @@ def none_message():
     pass
 
 
-if __name__ == '__main__':
+def execute(level):
+    print("----")
+    set_root_level(level)
     sample()
     process_parameters("one", 5)
     process_parameter("one")
     value = get_value()
     sample_message()
     none_message()
+    print("----")
+
+
+if __name__ == '__main__':
+    execute(Level.OFF)
+    execute(Level.INFO)
+    execute(Level.DEBUG)
+    execute(Level.ALL)

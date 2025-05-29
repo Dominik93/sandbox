@@ -1,7 +1,7 @@
 import time
 from enum import Enum
 
-from logger.logger import CompositeLogger, Level
+from logger.logger import get_logger
 
 
 class ExceptionStrategy(Enum):
@@ -18,7 +18,7 @@ class CountableProcessor:
         self.results = []
         self.item_processor = item_processor
         self.input_provider = input_provider
-        self.logger = CompositeLogger(Level.INFO, self.__class__.__name__)
+        self.logger = get_logger(self.__class__.__name__)
 
     def run(self, items: list):
         all_start = time.time_ns()
@@ -26,21 +26,23 @@ class CountableProcessor:
         for idx, item in enumerate(items):
             item_start = time.time_ns()
             try:
+                self.logger.debug("run", f'Process {item}')
                 self.results.append(self.item_processor(item))
             except Exception as e:
                 item_duration = self._get_duration(item_start)
                 all_duration = self._get_duration(all_start)
-                self.logger.log("run",f'Exception {e} during iteration {idx + 1}/{total} {item_duration}/{all_duration}ms')
+                self.logger.error("run",
+                                  f'Exception "{e}" during iteration {idx + 1}/{total} in {item_duration}/{all_duration}ms')
                 if self.exception_strategy == ExceptionStrategy.ASK:
                     retry = self.input_provider()
                     if retry == 'N':
                         return self.results
                 if self.exception_strategy == ExceptionStrategy.INTERRUPT:
-                    self.logger.log("run", f'Processing interrupted, returning already processed items')
+                    self.logger.warn("run", f'Processing interrupted, returning already processed items')
                     return self.results
             item_duration = self._get_duration(item_start)
             all_duration = self._get_duration(all_start)
-            self.logger.log("run", f'Processed {idx + 1}/{total} in {item_duration}/{all_duration}ms')
+            self.logger.info("run", f'Processed {idx + 1}/{total} in {item_duration}/{all_duration}ms')
         return self.results
 
     def _get_duration(self, start):
