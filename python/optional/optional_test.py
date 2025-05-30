@@ -3,6 +3,9 @@ import unittest
 from optional import of, empty
 
 
+class CustomException(Exception):
+    pass
+
 class OptionalTestCase(unittest.TestCase):
 
     def test_should_get_value_if_present(self):
@@ -10,6 +13,9 @@ class OptionalTestCase(unittest.TestCase):
 
     def test_should_raise_exception_when_get_value_if_absent(self):
         self.assertRaises(Exception, lambda: empty().get())
+
+    def test_should_raise_custom_exception_when_get_value_if_absent(self):
+        self.assertRaises(CustomException, lambda: empty().or_else_raise_exception(CustomException()))
 
     def test_should_get_other_value_if_absent(self):
         self.assertEqual("other", empty().or_get("other"))

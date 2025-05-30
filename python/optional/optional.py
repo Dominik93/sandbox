@@ -17,9 +17,7 @@ class Optional:
         return Optional(mapper(self.value))
 
     def get(self):
-        if self.is_empty():
-            raise Exception("Value is None")
-        return self.value
+        return self.or_else_raise()
 
     def or_get(self, other):
         return other if self.is_empty() else self.value
@@ -27,9 +25,12 @@ class Optional:
     def or_else_get(self, other_provider):
         return other_provider() if self.is_empty() else self.value
 
-    def or_else_throw(self):
+    def or_else_raise(self):
+        return self.or_else_raise_exception(Exception("Value is None"))
+
+    def or_else_raise_exception(self, exception):
         if self.is_empty():
-            raise Exception("Value is None")
+            raise exception
         return self.value
 
     def if_present(self, processor):
