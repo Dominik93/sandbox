@@ -1,6 +1,6 @@
 {
-  "root" : "DEBUG",
-  "loggers": {
-    "Log": "OFF"
+  "logging": {
+    "root" : "DEBUG",
+    "Log": "DEBUG"
   }
 }
