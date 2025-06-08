@@ -14,13 +14,15 @@ class ExceptionStrategy(Enum):
 
 class CountableProcessor:
 
-    def __init__(self, items: list):
+    def __init__(self, items: list, exception_strategy=ExceptionStrategy.INTERRUPT,
+                 input_provider=lambda: input("You want to continue? Y/N")):
         self.items = items
         self.results = []
+        self.input_provider = input_provider
+        self.exception_strategy = exception_strategy
         self.logger = get_logger(self.__class__.__name__)
 
-    def run(self, item_processor: callable, input_provider=lambda: input("You want to continue? Y/N"),
-            exception_strategy=ExceptionStrategy.INTERRUPT):
+    def run(self, item_processor: callable):
         all_start = time.time_ns()
         total = len(self.items)
         for idx, item in enumerate(self.items):
@@ -33,13 +35,13 @@ class CountableProcessor:
                 all_duration = self._get_duration(all_start)
                 self.logger.error("run",
                                   f'Exception "{e}" {traceback.format_exc()} during iteration {idx + 1}/{total} in {item_duration}/{all_duration}ms')
-                if exception_strategy == ExceptionStrategy.ASK:
-                    retry = input_provider()
+                if self.exception_strategy == ExceptionStrategy.ASK:
+                    retry = self.input_provider()
                     if retry == 'N':
                         return self.results
-                if exception_strategy == ExceptionStrategy.RAISE:
+                if self.exception_strategy == ExceptionStrategy.RAISE:
                     raise e
-                if exception_strategy == ExceptionStrategy.INTERRUPT:
+                if self.exception_strategy == ExceptionStrategy.INTERRUPT:
                     self.logger.warn("run", f'Processing interrupted, returning already processed items')
                     return self.results
             item_duration = self._get_duration(item_start)

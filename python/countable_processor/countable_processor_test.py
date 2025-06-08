@@ -27,39 +27,38 @@ class CountableProcessorTestCase(unittest.TestCase):
 
     def test_should_process_items_interrupt(self):
         results = []
-        CountableProcessor(["1", "2", "3"]).run(
-            lambda x: results.append(_interrupt(x)), exception_strategy=INTERRUPT)
+        CountableProcessor(["1", "2", "3"], INTERRUPT).run(lambda x: results.append(_interrupt(x)))
         self.assertEqual(["1"], results)
 
     def test_should_process_and_return_items_interrupt(self):
-        results = CountableProcessor(["1", "2", "3"]).run(lambda x: _interrupt(x), exception_strategy=INTERRUPT)
+        results = CountableProcessor(["1", "2", "3"], INTERRUPT).run(lambda x: _interrupt(x))
         self.assertEqual(["1"], results)
 
     def test_should_process_items_pass(self):
         results = []
-        CountableProcessor( ["1", "2", "3"]).run(lambda x: results.append(_interrupt(x)), exception_strategy=PASS )
+        CountableProcessor(["1", "2", "3"], PASS).run(lambda x: results.append(_interrupt(x)))
         self.assertEqual(["1", "3"], results)
 
     def test_should_process_and_return_items_pass(self):
-        results = CountableProcessor(["1", "2", "3"]).run(lambda x: _interrupt(x), exception_strategy=PASS)
+        results = CountableProcessor(["1", "2", "3"], PASS).run(lambda x: _interrupt(x))
         self.assertEqual(["1", "3"], results)
 
     def test_should_process_items_ask_yes(self):
         results = []
-        CountableProcessor(["1", "2", "3"]).run(lambda x: results.append(_interrupt(x)), lambda: "Y", ASK)
+        CountableProcessor(["1", "2", "3"], ASK, lambda: "Y").run(lambda x: results.append(_interrupt(x)))
         self.assertEqual(["1", "3"], results)
 
     def test_should_process_and_return_items_ask_yes(self):
-        results = CountableProcessor(["1", "2", "3"]).run(lambda x: _interrupt(x), lambda: "Y", ASK)
+        results = CountableProcessor(["1", "2", "3"], ASK, lambda: "Y").run(lambda x: _interrupt(x))
         self.assertEqual(["1", "3"], results)
 
     def test_should_process_items_ask_no(self):
         results = []
-        CountableProcessor(["1", "2", "3"]).run(lambda x: results.append(_interrupt(x)), lambda: "N", ASK)
+        CountableProcessor(["1", "2", "3"], ASK, lambda: "N").run(lambda x: results.append(_interrupt(x)))
         self.assertEqual(["1"], results)
 
     def test_should_process_and_return_items_ask_no(self):
-        results = CountableProcessor(["1", "2", "3"]).run(lambda x: _interrupt(x), lambda: "N", ASK)
+        results = CountableProcessor(["1", "2", "3"], ASK, lambda: "N").run(lambda x: _interrupt(x))
         self.assertEqual(["1"], results)
 
 
