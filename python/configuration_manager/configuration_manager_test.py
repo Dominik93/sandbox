@@ -1,6 +1,8 @@
+import json
 import unittest
+import random
 
-from configuration_reader import read_configuration
+from configuration_manager import read_configuration, save_configuration
 
 
 class ConfigurationReaderTestCase(unittest.TestCase):
@@ -29,6 +31,14 @@ class ConfigurationReaderTestCase(unittest.TestCase):
     def test_should_read_configuration_and_cache_config(self):
         configuration_one = read_configuration('config', use_cache=True)
         configuration_one = read_configuration('config', use_cache=True)
+
+    def test_should_save_new_cached_configuration(self):
+        read_configuration('config_modify', use_cache=True)
+        value = random.randint(1, 100)
+        json_config = json.dumps({"new": str(value)}, indent=2)
+        save_configuration("config_modify", json_config)
+        configuration_one = read_configuration('config_modify', use_cache=True)
+        self.assertEqual(str(value), configuration_one.get_value("new"))
 
 
 if __name__ == '__main__':
