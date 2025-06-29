@@ -21,6 +21,13 @@ __root_level: Level = Level.INFO
 
 __level = {}
 
+__log_format = "{time} [{pid}] {level} {name} - {message}"
+
+
+def set_format(log_format: str):
+    global __log_format
+    __log_format = log_format
+
 
 def set_root_level(level: Level):
     global __root_level
@@ -36,10 +43,12 @@ def _load_logback(file_name: str, provider):
     with open(file_name) as file:
         logback = provider(file)
         logging = logback['logging']
-        set_root_level(Level[logging['root']])
-        for key in logging:
+        level = logging['level']
+        set_format(logging['format'])
+        set_root_level(Level[level['root']])
+        for key in level:
             if key != 'root':
-                set_level(key, Level[logging[key]])
+                set_level(key, Level[level[key]])
 
 
 if os.path.isfile("logback.json"):
@@ -52,36 +61,40 @@ if os.path.isfile("logback.yaml"):
 def get_logger(name: str):
     global __level
     global __root_level
-    return CompositeLogger(name, __level[name] if name in __level else __root_level)
+    global __log_format
+    return CompositeLogger(name, __log_format, __level[name] if name in __level else __root_level)
 
 
 class Logger:
 
-    def __init__(self, name: str, level: Level, timestamp_format="%Y-%m-%dT%H:%M:%S.%f"):
+    def __init__(self, name: str, log_format: str, level: Level, timestamp_format="%Y-%m-%dT%H:%M:%S.%f"):
         self.name = name
         self.level = level
+        self.log_format = log_format
         self.timestamp_format = timestamp_format
 
-    def info(self, method_name: str, log_format: str, content_provider=lambda x: x):
-        self.log(Level.INFO, method_name, log_format, content_provider)
+    def info(self, method_name: str, message: str, content_provider=lambda x: x):
+        self.log(Level.INFO, method_name, message, content_provider)
 
-    def debug(self, method_name: str, log_format: str, content_provider=lambda x: x):
-        self.log(Level.DEBUG, method_name, log_format, content_provider)
+    def debug(self, method_name: str, message: str, content_provider=lambda x: x):
+        self.log(Level.DEBUG, method_name, message, content_provider)
 
-    def trace(self, method_name: str, log_format: str, content_provider=lambda x: x):
-        self.log(Level.TRACE, method_name, log_format, content_provider)
+    def trace(self, method_name: str, message: str, content_provider=lambda x: x):
+        self.log(Level.TRACE, method_name, message, content_provider)
 
-    def warn(self, method_name: str, log_format: str, content_provider=lambda x: x):
-        self.log(Level.WARN, method_name, log_format, content_provider)
+    def warn(self, method_name: str, message: str, content_provider=lambda x: x):
+        self.log(Level.WARN, method_name, message, content_provider)
 
-    def error(self, method_name: str, log_format: str, content_provider=lambda x: x):
-        self.log(Level.ERROR, method_name, log_format, content_provider)
+    def error(self, method_name: str, message: str, content_provider=lambda x: x):
+        self.log(Level.ERROR, method_name, message, content_provider)
 
-    def log(self, level: Level, method_name: str, log_format: str, content_provider=lambda x: x):
+    def log(self, level: Level, method_name: str, message: str, content_provider=lambda x: x):
         pass
 
-    def format(self, level: Level, method_name: str, log_format: str, content_provider=lambda x: x):
-        return f'{os.getpid()}:{level.name}:{self._now()}:{self._get_name(method_name)}:{content_provider(log_format)}'
+    def format(self, level: Level, method_name: str, message: str, message_provider=lambda x: x):
+        return self.log_format.format(pid=os.getpid(), level=level.name, time=self._now(),
+                                      name=self._get_name(method_name),
+                                      message=message_provider(message))
 
     def _now(self):
         return datetime.now().strftime(self.timestamp_format)
@@ -92,41 +105,41 @@ class Logger:
 
 class ConsoleLogger(Logger):
 
-    def __init__(self, name: str, level: Level):
-        super().__init__(name, level)
+    def __init__(self, name: str, log_format: str, level: Level):
+        super().__init__(name, log_format, level)
 
-    def log(self, level: Level, method_name: str, log_format: str, content_provider=lambda x: x):
-        print(self.format(level, method_name, log_format, content_provider))
+    def log(self, level: Level, method_name: str, message: str, content_provider=lambda x: x):
+        print(self.format(level, method_name, message, content_provider))
 
 
 class FileLogger(Logger):
 
-    def __init__(self, name: str, level: Level, file_name: str):
-        super().__init__(name, level)
+    def __init__(self, name: str, log_format: str, level: Level, file_name: str):
+        super().__init__(name, log_format, level)
         self.file_name = file_name
 
-    def log(self, level: Level, method_name: str, log_format: str, content_provider=lambda x: x):
+    def log(self, level: Level, method_name: str, message: str, content_provider=lambda x: x):
         log_file = open(self.file_name, "a")
-        log_file.write(self.format(level, method_name, log_format, content_provider) + '\n')
+        log_file.write(self.format(level, method_name, message, content_provider) + '\n')
         log_file.close()
 
 
 class CompositeLogger(Logger):
 
-    def __init__(self, name: str, level: Level, file_name="app.log"):
-        super().__init__(name, level)
-        self.loggers = [ConsoleLogger(name, level), FileLogger(name, level, file_name)]
+    def __init__(self, name: str, log_format: str, level: Level, file_name="app.log"):
+        super().__init__(name, log_format, level)
+        self.loggers = [ConsoleLogger(name, log_format, level), FileLogger(name, log_format, level, file_name)]
 
-    def log(self, level: Level, method_name=None, log_format: str = "", content_provider=lambda x: x):
-        if log_format is None:
+    def log(self, level: Level, method_name=None, message: str = "", content_provider=lambda x: x):
+        if message is None:
             return
         if level.value < self.level.value:
             return
         if level.value in [Level.INFO.value]:
-            log_format = log_format.replace("{args}", "-").replace("{result}", "-")
+            message = message.replace("{args}", "-").replace("{result}", "-")
         if level != Level.OFF:
             for logger in self.loggers:
-                logger.log(level, method_name, log_format, content_provider)
+                logger.log(level, method_name, message, content_provider)
 
 
 def log(level=Level.INFO,

@@ -1,6 +1,9 @@
 {
   "logging": {
-    "root" : "DEBUG",
-    "Log": "DEBUG"
+    "format": "{time} [{pid}] {level} {name} - {message}",
+    "level": {
+      "root": "DEBUG",
+      "Log": "DEBUG"
+    }
   }
 }
