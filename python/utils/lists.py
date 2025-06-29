@@ -1,6 +1,11 @@
 from typing import Callable
 
 from optional.optional import Optional, of, empty
+from functools import reduce
+
+
+def flat(items):
+    return reduce(list.__add__, items)
 
 
 def partition(items, size):
