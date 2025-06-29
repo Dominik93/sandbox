@@ -1,6 +1,12 @@
 from typing import Callable
 
-from optional.optional import Optional, empty, of
+from optional.optional import Optional, of, empty
+
+
+def partition(items, size):
+    if len(items) < size:
+        return [items]
+    return list(_partition(items, size))
 
 
 def find_item(items: list[any], predicate: Callable) -> Optional:
@@ -8,3 +14,8 @@ def find_item(items: list[any], predicate: Callable) -> Optional:
         if predicate(item):
             return of(item)
     return empty()
+
+
+def _partition(items, size):
+    for i in range(0, len(items) // size):
+        yield items[i:: size]
