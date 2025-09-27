@@ -8,7 +8,14 @@ def flat(items):
     return reduce(list.__add__, items)
 
 
-def partition(items, size):
+def partition_by_size(items: [], size: int):
+    if len(items) < size:
+        return [items]
+    return list(_partition(items, size))
+
+
+def partition_by_number(items: [], number_of_partition: int):
+    size = round(len(items) / number_of_partition)
     if len(items) < size:
         return [items]
     return list(_partition(items, size))
@@ -22,5 +29,4 @@ def find_item(items: list[any], predicate: Callable) -> Optional:
 
 
 def _partition(items, size):
-    for i in range(0, len(items) // size):
-        yield items[i:: size]
+    return [items[i:i + size] for i in range(0, len(items), size)]
