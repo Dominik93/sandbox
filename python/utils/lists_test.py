@@ -49,6 +49,11 @@ class ListsTestCase(unittest.TestCase):
         partition_items = partition_by_number(items, 3)
         self.assertEqual([["1"], ["2"], ["3"]], partition_items)
 
+    def test_should_partition_by_number_to_few_elements(self):
+        items = ["1", "2", "3"]
+        partition_items = partition_by_number(items, 10)
+        self.assertEqual([["1"], ["2"], ["3"]], partition_items)
+
 
 if __name__ == '__main__':
     unittest.main()

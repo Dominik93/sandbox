@@ -10,7 +10,7 @@ def flat(items):
 
 def partition_by_number(items: [], number_of_partition: int):
     size = round(len(items) / number_of_partition)
-    return partition_by_size(items, size)
+    return partition_by_size(items, size if size > 0 else 1)
 
 
 def partition_by_size(items: [], size: int):
