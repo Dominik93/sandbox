@@ -1,21 +1,19 @@
+from functools import reduce
 from typing import Callable
 
 from optional.optional import Optional, of, empty
-from functools import reduce
 
 
 def flat(items):
     return reduce(list.__add__, items)
 
 
-def partition_by_size(items: [], size: int):
-    if len(items) < size:
-        return [items]
-    return list(_partition(items, size))
-
-
 def partition_by_number(items: [], number_of_partition: int):
     size = round(len(items) / number_of_partition)
+    return partition_by_size(items, size)
+
+
+def partition_by_size(items: [], size: int):
     if len(items) < size:
         return [items]
     return list(_partition(items, size))
