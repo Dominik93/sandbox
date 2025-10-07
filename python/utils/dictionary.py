@@ -33,6 +33,35 @@ class Dictionary:
                 return default
         return result
 
+    def set(self, path: str, value: any):
+        self._set(path.split("."), value)
+
+    def _set(self, property_names: list, value: any):
+        result = self.content
+        i = 0
+        size = len(property_names)
+        for property_name in property_names:
+            if result is not None and property_name in result:
+                if i == size - 1:
+                    result[property_name] = value
+                result = result[property_name]
+            i += 1
+
+    def delete(self, path):
+        self._delete(path.split("."))
+
+    def _delete(self, property_names: list):
+        result = self.content
+        i = 0
+        size = len(property_names)
+        for property_name in property_names:
+            if result is not None and property_name in result:
+                if i == size - 1:
+                    del result[property_name]
+                else:
+                    result = result[property_name]
+            i += 1
+
     def _exists(self, property_names: list) -> bool:
         result = self.content
         for property_name in property_names:
