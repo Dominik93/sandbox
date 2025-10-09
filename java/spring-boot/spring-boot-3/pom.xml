@@ -16,7 +16,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <spring-boot.version>3.4.3</spring-boot.version>
+        <spring-boot.version>3.4.10</spring-boot.version>
     </properties>
 
     <modules>
