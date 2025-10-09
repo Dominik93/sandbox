@@ -1,0 +1,2 @@
+org.springframework.test.context.TestExecutionListener=\
+com.slusarz.sandbox.springboot.testlisteners.db.starter.DbTestListener
