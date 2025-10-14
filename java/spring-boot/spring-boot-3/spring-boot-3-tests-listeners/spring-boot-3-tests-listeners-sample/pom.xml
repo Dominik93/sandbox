@@ -18,12 +18,10 @@
         <dependency>
             <groupId>com.slusarz.sandbox</groupId>
             <artifactId>spring-boot-3-tests-listeners-db-starter</artifactId>
-            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>com.slusarz.sandbox</groupId>
             <artifactId>spring-boot-3-tests-listeners-kafka-starter</artifactId>
-            <version>1.0.0</version>
         </dependency>
 
         <dependency>
