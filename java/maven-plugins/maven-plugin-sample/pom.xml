@@ -16,7 +16,6 @@
         <maven.compiler.source>17</maven.compiler.source>
 
         <reflections.version>0.9.12</reflections.version>
-        <javaparser-core.version>3.25.10</javaparser-core.version>
 
         <maven-plugin.version>3.6.3</maven-plugin.version>
         <maven-plugin-annotations.version>3.6.0</maven-plugin-annotations.version>
@@ -34,11 +33,6 @@
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>
             <version>${reflections.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.javaparser</groupId>
-            <artifactId>javaparser-core</artifactId>
-            <version>${javaparser-core.version}</version>
         </dependency>
 
         <dependency>

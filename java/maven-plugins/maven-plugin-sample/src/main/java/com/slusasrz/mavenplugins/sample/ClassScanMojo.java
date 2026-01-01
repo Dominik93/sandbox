@@ -9,7 +9,9 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
+import org.reflections.Configuration;
 import org.reflections.Reflections;
+import org.reflections.util.ConfigurationBuilder;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -28,7 +30,6 @@ public class ClassScanMojo extends AbstractMojo {
 
     @Override
     public void execute() {
-
         getLog().info("Class scan");
 
         try {
@@ -36,8 +37,6 @@ public class ClassScanMojo extends AbstractMojo {
             getLog().info("Class loader: " + classLoader);
 
             Reflections reflections = new Reflections(classLoader);
-            reflections.getTypesAnnotatedWith(SampleAnnotation.class)
-                    .forEach(System.out::println);
 
             Set<Class<?>> typesAnnotatedWith = reflections.getTypesAnnotatedWith(SampleAnnotation.class);
             for (Class<?> aClass : typesAnnotatedWith) {
@@ -45,6 +44,7 @@ public class ClassScanMojo extends AbstractMojo {
             }
 
         } catch (Exception e) {
+            getLog().error("Class scan failed.", e);
             throw new RuntimeException(e);
         }
     }
