@@ -1,0 +1,39 @@
+package com.slusarz.sandbox;
+
+import io.micrometer.common.KeyValue;
+import io.micrometer.common.KeyValues;
+import org.springframework.http.client.ClientHttpRequest;
+import org.springframework.http.client.observation.ClientRequestObservationContext;
+import org.springframework.http.client.observation.DefaultClientRequestObservationConvention;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.util.UriComponentsBuilder;
+
+public class ExtendedDefaultClientRequestObservationConvention extends DefaultClientRequestObservationConvention {
+
+    @Override
+    public KeyValues getLowCardinalityKeyValues(ClientRequestObservationContext context) {
+        // here, we just want to have an additional KeyValue to the observation, keeping the default values
+        return super.getLowCardinalityKeyValues(context).and(additionalTags(context));
+    }
+
+    protected KeyValues additionalTags(ClientRequestObservationContext context) {
+        KeyValues keyValues = KeyValues.empty();
+
+        ClientHttpRequest request = context.getCarrier();
+        String uri = request.getURI().toString();
+
+        // Optional tag which will be present in metrics only when the condition is evaluated to true
+        MultiValueMap<String, String> parameters = UriComponentsBuilder.fromUriString(uri).build().getQueryParams();
+
+        if (parameters.containsKey("id")) {
+            keyValues = keyValues.and(KeyValue.of("userId", parameters.get("id").get(0)));
+        }
+
+        // Custom tag which will be present in all the controller metrics
+        keyValues = keyValues.and(KeyValue.of("tag", "value"));
+
+        return keyValues;
+    }
+
+
+}
