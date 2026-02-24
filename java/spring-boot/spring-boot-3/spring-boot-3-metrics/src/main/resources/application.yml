@@ -9,6 +9,21 @@ management:
   metrics:
     tags:
       stack: sandbox
+
+spring:
+  datasource:
+    url: jdbc:sqlite:./java/spring-boot/spring-boot-3/spring-boot-3-metrics/src/main/resources/sample.db
+    password: sample
+    username: sample
+  jpa:
+    show_sql: true
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        generate_statistics: true
+        dialect: org.hibernate.community.dialect.SQLiteDialect
+
 logging:
   level:
     root: INFO

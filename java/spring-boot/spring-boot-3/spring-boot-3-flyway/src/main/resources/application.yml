@@ -4,7 +4,7 @@ logging:
 
 spring:
   datasource:
-    url: jdbc:sqlite:./spring-boot-3/spring-boot-3-flyway/src/main/resources/sample.db
+    url: jdbc:sqlite:./java/spring-boot/spring-boot-3/spring-boot-3-flyway/src/main/resources/sample.db
     password: sample
     username: sample
   flyway:

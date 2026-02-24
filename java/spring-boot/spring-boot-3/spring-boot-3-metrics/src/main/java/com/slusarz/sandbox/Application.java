@@ -1,5 +1,7 @@
 package com.slusarz.sandbox;
 
+import com.slusarz.sandbox.restclient.ExtendedDefaultClientRequestObservationConvention;
+import com.slusarz.sandbox.server.ExtendedServerRequestObservationConvention;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;

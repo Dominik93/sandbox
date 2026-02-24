@@ -1,4 +1,4 @@
-package com.slusarz.sandbox;
+package com.slusarz.sandbox.server;
 
 import io.micrometer.common.KeyValue;
 import io.micrometer.common.KeyValues;
