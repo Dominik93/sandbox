@@ -1,7 +1,5 @@
 package com.slusarz.sandbox;
 
-import com.slusarz.sandbox.restclient.ExtendedDefaultClientRequestObservationConvention;
-import com.slusarz.sandbox.server.ExtendedServerRequestObservationConvention;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -17,16 +15,6 @@ public class Application {
     @Bean
     RestClient restClient(RestClient.Builder builder) {
         return builder.build();
-    }
-
-    @Bean
-    ExtendedServerRequestObservationConvention extendedServerRequestObservationConvention() {
-        return new ExtendedServerRequestObservationConvention();
-    }
-
-    @Bean
-    ExtendedDefaultClientRequestObservationConvention extendedDefaultClientRequestObservationConvention() {
-        return new ExtendedDefaultClientRequestObservationConvention();
     }
 
 }

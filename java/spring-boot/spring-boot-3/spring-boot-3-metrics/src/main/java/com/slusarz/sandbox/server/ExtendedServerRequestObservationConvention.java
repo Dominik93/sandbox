@@ -4,8 +4,10 @@ import io.micrometer.common.KeyValue;
 import io.micrometer.common.KeyValues;
 import org.springframework.http.server.observation.DefaultServerRequestObservationConvention;
 import org.springframework.http.server.observation.ServerRequestObservationContext;
+import org.springframework.stereotype.Component;
 
 
+@Component
 public class ExtendedServerRequestObservationConvention extends DefaultServerRequestObservationConvention {
 
 

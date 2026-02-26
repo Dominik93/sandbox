@@ -5,9 +5,11 @@ import io.micrometer.common.KeyValues;
 import org.springframework.http.client.ClientHttpRequest;
 import org.springframework.http.client.observation.ClientRequestObservationContext;
 import org.springframework.http.client.observation.DefaultClientRequestObservationConvention;
+import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 
+@Component
 public class ExtendedDefaultClientRequestObservationConvention extends DefaultClientRequestObservationConvention {
 
     @Override
