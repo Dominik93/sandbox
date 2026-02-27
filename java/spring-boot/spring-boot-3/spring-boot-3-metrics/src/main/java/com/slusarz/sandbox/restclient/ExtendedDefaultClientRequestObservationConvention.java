@@ -1,39 +1,28 @@
 package com.slusarz.sandbox.restclient;
 
+import com.slusarz.sandbox.headers.HeaderHolder;
 import io.micrometer.common.KeyValue;
 import io.micrometer.common.KeyValues;
-import org.springframework.http.client.ClientHttpRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.client.observation.ClientRequestObservationContext;
 import org.springframework.http.client.observation.DefaultClientRequestObservationConvention;
 import org.springframework.stereotype.Component;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.util.UriComponentsBuilder;
 
 @Component
 public class ExtendedDefaultClientRequestObservationConvention extends DefaultClientRequestObservationConvention {
 
+    @Autowired
+    private HeaderHolder headerHolder;
+
     @Override
     public KeyValues getLowCardinalityKeyValues(ClientRequestObservationContext context) {
         // here, we just want to have an additional KeyValue to the observation, keeping the default values
-        return super.getLowCardinalityKeyValues(context).and(additionalTags(context));
+        return super.getLowCardinalityKeyValues(context).and(additionalTags());
     }
 
-    protected KeyValues additionalTags(ClientRequestObservationContext context) {
+    protected KeyValues additionalTags() {
         KeyValues keyValues = KeyValues.empty();
-
-        ClientHttpRequest request = context.getCarrier();
-        String uri = request.getURI().toString();
-
-        // Optional tag which will be present in metrics only when the condition is evaluated to true
-        MultiValueMap<String, String> parameters = UriComponentsBuilder.fromUriString(uri).build().getQueryParams();
-
-        if (parameters.containsKey("id")) {
-            keyValues = keyValues.and(KeyValue.of("userId", parameters.get("id").get(0)));
-        }
-
-        // Custom tag which will be present in all the controller metrics
-        keyValues = keyValues.and(KeyValue.of("tag", "value"));
-
+        keyValues = keyValues.and(KeyValue.of("client.tag", headerHolder.get().getOrDefault("X-TAG", "none")));
         return keyValues;
     }
 
