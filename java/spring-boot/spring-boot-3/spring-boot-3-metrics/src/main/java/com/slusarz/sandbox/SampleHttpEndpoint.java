@@ -1,5 +1,6 @@
 package com.slusarz.sandbox;
 
+import com.slusarz.sandbox.cache.SampleCache;
 import com.slusarz.sandbox.custom.counter.CounterService;
 import com.slusarz.sandbox.custom.gauge.GaugeService;
 import com.slusarz.sandbox.custom.timer.TimerService;
@@ -27,6 +28,14 @@ public class SampleHttpEndpoint {
     private TimerService timerService;
     @Autowired
     private GaugeService gaugeService;
+
+    @Autowired
+    private SampleCache sampleCache;
+
+    @GetMapping("/cache/{id}")
+    String cache(@PathVariable("id") String id) {
+        return sampleCache.get(id);
+    }
 
     @GetMapping("/rest-client")
     String restClient() {
